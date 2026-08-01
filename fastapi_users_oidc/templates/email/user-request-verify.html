@@ -1,0 +1,23 @@
+{% extends "email/layout.html" %}
+
+{% block title %}Verify Your Email{% endblock %}
+
+{% block header %}Verify Your Email Address{% endblock %}
+
+{% block content %}
+    {% set display_name = user.first_name ~ ' ' ~ user.last_name if user.first_name and user.last_name else user.first_name or user.last_name or user.email %}
+    <p>Hello {{ display_name }},</p>
+    <p>We received a request to verify your email address. Please use the following to complete the verification process:</p>
+    <pre>
+        curl \
+            -X POST
+            -H "Content-Type: application/json" \
+            -d "{\"token\": \"{{ token }}\"}" \
+            {{ base_url }}/auth/v1/verify
+    </pre>
+    <br>
+    <pre>
+        {{ token }}
+    </pre>
+    <p>If you did not request this, please ignore this email.</p>
+{% endblock %}
